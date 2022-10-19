@@ -23,6 +23,11 @@ namespace DevIO.App.ViewModels
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
 
+        [Required(ErrorMessage = "O campo {0} e obrigatorio")]
+        [DisplayName("Fornecedor")]
+        public Guid FornecedorId { get; set; }
+
         public FornecedorViewModel Fornecedor { get; set; }
+        public IEnumerable<FornecedorViewModel> Fornecedores { get; set; }
     }
 }
