@@ -16,7 +16,7 @@ namespace DevIO.App.ViewModels
         public string Descricao { get; set; }
         [DisplayName("Imagem do Produto")]
         public IFormFile ImagemUpload { get; set; }
-        public string Imagem { get; set; }
+        public string? Imagem { get; set; }
         [Required(ErrorMessage = "O campo {0} é obrigatorio")]
         public decimal Valor { get; set; }
         [ScaffoldColumn(false)]
@@ -28,7 +28,7 @@ namespace DevIO.App.ViewModels
         [DisplayName("Fornecedor")]
         public Guid FornecedorId { get; set; }
 
-        public FornecedorViewModel Fornecedor { get; set; }
-        public IEnumerable<FornecedorViewModel> Fornecedores { get; set; }
+        public FornecedorViewModel? Fornecedor { get; set; }
+        public IEnumerable<FornecedorViewModel>? Fornecedores { get; set; }
     }
 }
