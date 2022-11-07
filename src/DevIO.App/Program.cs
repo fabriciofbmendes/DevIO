@@ -4,7 +4,11 @@ using DevIO.Data.Context;
 using DevIO.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using static DevIO.App.Extensions.MoedaAttributeAdapter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,8 @@ builder.Services.AddDbContext<DevIODbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddLocalization();
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
@@ -25,6 +31,21 @@ builder.Services.AddScoped<DevIODbContext>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
 builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+builder.Services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
+builder.Services.AddMvc(o =>
+{
+    o.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((x, y) => "O valor preenchido e invalido para este campo");
+    o.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(x => "Este campo preicsa ser preenchido.");
+    o.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => "Este campo precisa ser preenchido");
+    o.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(() => "E necessario que o body na requisicao nao esteja vazio.");
+    o.ModelBindingMessageProvider.SetNonPropertyAttemptedValueIsInvalidAccessor((x) => "O valor preenchido e invalido para este campo.");
+    o.ModelBindingMessageProvider.SetNonPropertyUnknownValueIsInvalidAccessor(() => "O valor preenchido e invalido para este campo.");
+    o.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => "O campo deve ser numerico");
+    o.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor((x) => "O valor preenchido e invalido para este campo.");
+    o.ModelBindingMessageProvider.SetValueIsInvalidAccessor((x) => "O valor preenchido e invalido para este campo.");
+    o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => "O campo deve ser numerico");
+    o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => "Este campo precisa ser preenchido");
+});
 
 var app = builder.Build();
 
@@ -44,7 +65,16 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+var defaultCulture = new CultureInfo("pt-BR");
 
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(culture:"pt-BR",uiCulture:"pt-BR"),
+    SupportedCultures = new List<CultureInfo> { defaultCulture },
+    SupportedUICultures = new List<CultureInfo> { defaultCulture },
+};
+
+app.UseRequestLocalization(localizationOptions);
 app.UseAuthentication();
 app.UseAuthorization();
 
