@@ -71,7 +71,6 @@ namespace DevIO.App.Controllers
             {
                 return NotFound();
             }
-
             if (!ModelState.IsValid)
             {
                 return View(fornecedorViewModel);

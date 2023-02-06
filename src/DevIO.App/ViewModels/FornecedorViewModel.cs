@@ -15,7 +15,7 @@ namespace DevIO.App.ViewModels
         public string Documento { get; set; }
         [DisplayName("Tipo")]
         public int TipoFornecedor { get; set; }
-        public EnderecoViewModel Endereco { get; set; }
+        public EnderecoViewModel? Endereco { get; set; }
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
         public IEnumerable<ProdutoViewModel>? Produtos { get; set; }
