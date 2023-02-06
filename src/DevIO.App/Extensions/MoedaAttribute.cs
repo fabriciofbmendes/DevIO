@@ -8,7 +8,7 @@ namespace DevIO.App.Extensions
 {
     public class MoedaAttribute : ValidationAttribute
     {
-        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             try
             {

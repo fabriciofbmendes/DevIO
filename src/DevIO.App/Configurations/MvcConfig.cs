@@ -18,6 +18,8 @@
                 o.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(x => "O campo deve ser numerico");
                 o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(x => "Este campo precisa ser preenchido");
             });
+
+            services.AddRazorPages();
             return services;
         }
     }

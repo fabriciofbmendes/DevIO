@@ -1,12 +1,13 @@
 using DevIO.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using DevIO.App.Configurations;
+using DevIO.Business.Interfaces;
+using DevIO.Business.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
@@ -20,16 +21,11 @@ builder.Services.AddIdentityConfiguration(builder.Configuration);
 builder.Services.AddDbContext<DevIODbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddLocalization();
-
-
-
-builder.Services.AddControllersWithViews();
 builder.Services.ResolveDependencies();
-builder.Services.AddMvcConfiguration();
 
+builder.Services.AddMvcConfiguration();
 
 var app = builder.Build();
 
@@ -48,9 +44,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
+app.UseGlobalizationConfiguration();
 app.UseAuthentication();
 app.UseAuthorization();
 
