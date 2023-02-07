@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Extensions\CustomAuthorization.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="automapper.extensions.microsoft.dependencyinjection" Version="12.0.0" />
     <PackageReference Include="FluentValidation" Version="11.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.6" />
